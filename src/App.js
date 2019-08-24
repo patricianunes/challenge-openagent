@@ -93,7 +93,7 @@ class App extends Component {
               name="search"
               value={this.state.search}
               onChange={this.onChange}
-              placeholder="Search"
+              placeholder="Search Linda"
             />
 
             <table className="table table-stripe">
