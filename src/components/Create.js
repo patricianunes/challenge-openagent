@@ -93,7 +93,7 @@ class Create extends Component {
                   name="propertyType"
                   value={propertyType}
                   onChange={this.onChange}
-                  placeholder="apartament or house"
+                  placeholder="apartment or house"
                 />
               </div>
               <div className="form-group">

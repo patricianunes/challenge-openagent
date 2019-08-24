@@ -41,47 +41,38 @@ class App extends Component {
     this.setState({
       addresses
     });
+    const tempSearch = this.state;
+    tempSearch["previousState"] = this.state.addresses;
+    this.setState(tempSearch);
   };
 
   //TODO: change to a search component
   onChange = e => {
-    const state = this.state;
-    state[e.target.name] = e.target.value;
-    this.setState(state);
+    const tempSearch = this.state;
+    tempSearch[e.target.name] = e.target.value;
+    this.setState(tempSearch);
 
-    const db = this.ref
-      .orderBy("propertyType")
+    if (e.target.value === "") {
+      this.setState({ addresses: this.state.previousState });
+    } else {
+      const result = this.state.addresses.filter(
+        obj =>
+          obj.key.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          obj.propertyType
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          obj.unitNumber.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          obj.streetNumber
+            .toLowerCase()
+            .includes(e.target.value.toLowerCase()) ||
+          obj.street.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          obj.suburb.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          obj.postCode.toLowerCase().includes(e.target.value.toLowerCase()) ||
+          obj.state.toLowerCase().includes(e.target.value.toLowerCase())
+      );
 
-      .startAt(e.target.value)
-      .endAt(e.target.value + "\uf8ff");
-    db.get()
-      .then(querySnapshot => {
-        if (querySnapshot) {
-          const array = [];
-
-          querySnapshot.forEach(function(doc) {
-            const mock = {
-              key: doc.id,
-              propertyType: doc.data().propertyType,
-              unitNumber: doc.data().unitNumber,
-              streetNumber: doc.data().streetNumber,
-              street: doc.data().street,
-              suburb: doc.data().suburb,
-              postCode: doc.data().postCode,
-              state: doc.data().state
-            };
-            array.push(mock);
-          });
-
-          this.setState({ addresses: array });
-          console.log(array);
-        } else {
-          console.log("Not found"); //TODO: create a label not found
-        }
-      })
-      .catch(function(error) {
-        console.log("Error getting document:", error);
-      });
+      this.setState({ addresses: result });
+    }
   };
 
   componentDidMount() {
