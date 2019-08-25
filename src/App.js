@@ -48,7 +48,6 @@ class App extends Component {
 
   //TODO: change to a search component
   onChange = e => {
-    console.log(e);
     const tempSearch = this.state;
     tempSearch[e.target.name] = e.target.value;
     this.setState(tempSearch);
